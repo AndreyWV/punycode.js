@@ -300,12 +300,12 @@ var encode = function(input) {
 	var delta = 0;
 	var bias = initialBias;
 
-	// Handle the basic code points.
-	for (var currentValue of input) {
-		if (currentValue < 0x80) {
+  // Handle the basic code points.
+  input.forEach(function(currentValue) {
+    if (currentValue < 0x80) {
 			output.push(stringFromCharCode(currentValue));
 		}
-	}
+  })
 
 	var basicLength = output.length;
 	var handledCPCount = basicLength;
@@ -324,11 +324,11 @@ var encode = function(input) {
 		// All non-basic code points < n have been handled already. Find the next
 		// larger one:
 		var m = maxInt;
-		for (var currentValue of input) {
+		input.forEach(function(currentValue) {
 			if (currentValue >= n && currentValue < m) {
 				m = currentValue;
 			}
-		}
+		});
 
 		// Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
 		// but guard against overflow.
@@ -340,7 +340,7 @@ var encode = function(input) {
 		delta += (m - n) * handledCPCountPlusOne;
 		n = m;
 
-		for (var currentValue of input) {
+		input.forEach(function(currentValue) {
 			if (currentValue < n && ++delta > maxInt) {
 				error('overflow');
 			}
@@ -365,7 +365,7 @@ var encode = function(input) {
 				delta = 0;
 				++handledCPCount;
 			}
-		}
+		});
 
 		++delta;
 		++n;
