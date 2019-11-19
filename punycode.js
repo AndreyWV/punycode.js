@@ -130,7 +130,9 @@ function ucs2decode(string) {
  * @param {Array} codePoints The array of numeric code points.
  * @returns {String} The new Unicode string (UCS-2).
  */
-const ucs2encode = array => String.fromCodePoint(...array);
+const ucs2encode = function(array) {
+	String.fromCodePoint.apply(this, array);
+}
 
 /**
  * Converts a basic code point into a digit/integer.
@@ -274,7 +276,7 @@ const decode = function(input) {
 
 	}
 
-	return String.fromCodePoint(...output);
+	return String.fromCodePoint.apply(this, output);
 };
 
 /**
